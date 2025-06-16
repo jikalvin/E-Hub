@@ -3,11 +3,12 @@
 import { useState, type FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth, type UserRole } from '@/contexts/auth-context'; // Import UserRole
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Import RadioGroup
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, UserPlus } from 'lucide-react';
 import { Icons } from '@/components/icons';
@@ -18,6 +19,7 @@ export function SignupForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState<UserRole>('student'); // Add role state
   const { signUp, loading: authLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,7 +37,8 @@ export function SignupForm() {
       return;
     }
     setIsSubmitting(true);
-    const user = await signUp(email, password, displayName);
+    // Pass role to signUp function
+    const user = await signUp(email, password, displayName, role);
     if (user) {
       toast({ title: 'Sign Up Successful', description: 'Welcome! Your account has been created.' });
       const redirectUrl = searchParams.get('redirect') || '/dashboard';
@@ -112,6 +115,32 @@ export function SignupForm() {
                 className="text-base"
               />
             </div>
+
+            {/* Role Selection Radio Group */}
+            <div className="space-y-2">
+              <Label htmlFor="role">I am a:</Label>
+              <RadioGroup
+                defaultValue="student"
+                onValueChange={(value: string) => setRole(value as UserRole)}
+                className="mt-2 mb-4"
+                id="role"
+                disabled={isSubmitting || authLoading}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="student" id="role-student" />
+                  <Label htmlFor="role-student" className="font-normal">Student / Young Professional</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="school_admin" id="role-school" />
+                  <Label htmlFor="role-school" className="font-normal">School / University Staff</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="employer" id="role-employer" />
+                  <Label htmlFor="role-employer" className="font-normal">Employer</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
             <Button type="submit" className="w-full text-base py-6" disabled={isSubmitting || authLoading}>
               {(isSubmitting || authLoading) ? (
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />

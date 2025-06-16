@@ -16,14 +16,14 @@ import {
   SidebarInset,
   SidebarFooter,
 } from '@/components/ui/sidebar';
-import { siteConfig, mainNavItems } from '@/config/site';
+import { siteConfig, studentNavItems, schoolAdminNavItems, employerNavItems, type NavItem } from '@/config/site'; // Updated imports
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Moon, Sun, LogOut, User, Settings, Loader2, ExternalLink } from 'lucide-react';
+import { Moon, Sun, LogOut, User, Settings, Loader2, ExternalLink, LayoutDashboard } from 'lucide-react'; // Added LayoutDashboard for default icon
 import { useTheme } from 'next-themes';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth, type UserRole } from '@/contexts/auth-context'; // Import UserRole
 import { cn } from '@/lib/utils';
 
 const ThemeToggle = () => {
@@ -55,7 +55,7 @@ const SimpleThemeProvider = ({ children }: { children: React.ReactNode }) => {
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, signOut, loading: authLoading } = useAuth();
+  const { user, userRole, signOut, loading: authLoading } = useAuth(); // Get userRole
 
   let ThemeProviderComponent = SimpleThemeProvider;
   try {
@@ -92,11 +92,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarHeader>
           <SidebarContent>
             <SidebarMenu>
-              {mainNavItems.map((item) => (
+              {getNavItemsForRole(userRole).map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <Link href={item.href}>
                     <SidebarMenuButton
-                      isActive={pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))}
+                      isActive={pathname === item.href || (item.href !== '/' && item.href !== '/dashboard' && item.href !== '/school-dashboard' && item.href !== '/employer-dashboard' && pathname.startsWith(item.href))}
                       tooltip={{ children: item.title, className: 'font-body' }}
                       className="font-body"
                     >
@@ -177,3 +177,19 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </ThemeProviderComponent>
   );
 }
+
+// Helper function to get navigation items based on role
+const getNavItemsForRole = (role: UserRole | null): NavItem[] => {
+  switch (role) {
+    case 'student':
+      return studentNavItems;
+    case 'school_admin':
+      return schoolAdminNavItems;
+    case 'employer':
+      return employerNavItems;
+    default:
+      // Fallback for null role (e.g., during loading or if role not set)
+      // Could return studentNavItems or a minimal set like just a dashboard link
+      return [{ title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard }];
+  }
+};

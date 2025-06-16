@@ -25,10 +25,28 @@ export function LoginForm() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const user = await signIn(email, password);
-    if (user) {
+    const signInResponse = await signIn(email, password); // signIn now returns { user, role }
+
+    if (signInResponse && signInResponse.user) {
       toast({ title: 'Login Successful', description: 'Welcome back!' });
-      const redirectUrl = searchParams.get('redirect') || '/dashboard';
+
+      const { role } = signInResponse;
+      let redirectUrl = searchParams.get('redirect'); // Check for existing redirect first
+
+      if (!redirectUrl) { // If no specific redirect, determine by role
+        switch (role) {
+          case 'school_admin':
+            redirectUrl = '/school-dashboard';
+            break;
+          case 'employer':
+            redirectUrl = '/employer-dashboard';
+            break;
+          case 'student':
+          default: // Default to student dashboard
+            redirectUrl = '/dashboard';
+            break;
+        }
+      }
       router.push(redirectUrl);
     }
     // Errors are handled by useAuth hook's toast via the signIn method

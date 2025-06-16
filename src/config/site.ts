@@ -15,9 +15,10 @@ export interface NavItem {
   external?: boolean;
 }
 
-export const mainNavItems: NavItem[] = [
+// Student Navigation
+export const studentNavItems: NavItem[] = [
   {
-    title: 'Dashboard',
+    title: 'Student Dashboard', // Renamed for clarity if needed, or keep as 'Dashboard'
     href: '/dashboard',
     icon: LayoutDashboard,
   },
@@ -47,6 +48,45 @@ export const mainNavItems: NavItem[] = [
     icon: Library,
   },
 ];
+
+// School Admin Navigation
+export const schoolAdminNavItems: NavItem[] = [
+  {
+    title: 'School Dashboard',
+    href: '/school-dashboard',
+    icon: LayoutDashboard, // Placeholder, consider 'Users' or a building icon
+  },
+  {
+    title: 'Internships', // Direct link to manage internships
+    href: '/school-dashboard/internships', // Assuming a sub-route
+    icon: Briefcase,
+  },
+  {
+    title: 'Profile', // Generic profile link
+    href: '/profile-settings', // Assuming a common profile page
+    icon: UserCircle,
+  },
+];
+
+// Employer Navigation
+export const employerNavItems: NavItem[] = [
+  {
+    title: 'Employer Dashboard',
+    href: '/employer-dashboard',
+    icon: LayoutDashboard, // Placeholder, consider 'Building' or 'Briefcase'
+  },
+  {
+    title: 'Job Postings', // Direct link to manage job postings
+    href: '/employer-dashboard/jobs', // Assuming a sub-route
+    icon: Briefcase,
+  },
+  {
+    title: 'Profile', // Generic profile link
+    href: '/profile-settings', // Assuming a common profile page
+    icon: UserCircle,
+  },
+];
+
 
 // Nav items for public landing pages (if needed in LandingLayout header)
 export const landingNavItems: NavItem[] = [
