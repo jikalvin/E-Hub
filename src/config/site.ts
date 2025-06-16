@@ -3,7 +3,7 @@ import { LayoutDashboard, Lightbulb, UserCircle, MessageSquare, Briefcase, Libra
 
 export const siteConfig = {
   name: 'E Hub',
-  description: 'E-Hub Inc. is Cameroon’s first AI-powered career development and job-matching platform for youth.',
+  description: 'E-Hub Inc. is Cameroon\'s first AI-powered career development and job-matching platform for youth.',
 };
 
 export interface NavItem {
@@ -63,7 +63,7 @@ export const schoolAdminNavItems: NavItem[] = [
   },
   {
     title: 'Profile', // Generic profile link
-    href: '/profile-settings', // Assuming a common profile page
+    href: '/school-dashboard/profile', // Corrected path
     icon: UserCircle,
   },
 ];
@@ -82,7 +82,7 @@ export const employerNavItems: NavItem[] = [
   },
   {
     title: 'Profile', // Generic profile link
-    href: '/profile-settings', // Assuming a common profile page
+    href: '/employer-dashboard/profile', // Corrected path
     icon: UserCircle,
   },
 ];

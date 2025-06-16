@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+    domains: ['localhost'],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   // If next-themes is used, it's good practice to add it here for older Next.js versions,
   // but usually not needed for latest versions with App Router.

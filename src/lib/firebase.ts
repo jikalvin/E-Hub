@@ -264,16 +264,13 @@ export const getEmployerIdForUser = async (userId: string): Promise<string | nul
     const userProfileSnap = await getDoc(userProfileRef);
 
     if (userProfileSnap.exists()) {
-      const userProfileData = userProfileSnap.data();
-      // Check if the role is 'employer' and employerId exists
-      if (userProfileData.role === 'employer' && userProfileData.employerId) {
-        return userProfileData.employerId as string;
-      }
+      const userData = userProfileSnap.data();
+      return userData?.employerId || null;
     }
-    return null; // Return null if not an employer, or employerId is not set
+    return null;
   } catch (error) {
-    console.error('Error fetching employerId for user:', error);
-    return null; // Return null on error
+    console.error(`Error fetching employer ID for user ${userId}:`, error);
+    throw error;
   }
 };
 
@@ -284,15 +281,13 @@ export const getSchoolIdForAdmin = async (userId: string): Promise<string | null
     const userProfileSnap = await getDoc(userProfileRef);
 
     if (userProfileSnap.exists()) {
-      const userProfileData = userProfileSnap.data();
-      if (userProfileData.role === 'school_admin' && userProfileData.schoolId) {
-        return userProfileData.schoolId as string;
-      }
+      const userData = userProfileSnap.data();
+      return userData?.schoolId || null;
     }
     return null;
   } catch (error) {
-    console.error('Error fetching schoolId for admin:', error);
-    return null; // Return null on error or if conditions aren't met
+    console.error(`Error fetching school ID for user ${userId}:`, error);
+    throw error;
   }
 };
 
@@ -478,5 +473,36 @@ export const applyForInternship = async (
   }
 };
 
+export const updateSchoolProfile = async (
+  userId: string,
+  schoolId: string,
+  schoolData: { name: string; address: string; contactEmail: string; phone: string; website: string; logoUrl?: string; description?: string }
+): Promise<void> => {
+  try {
+    const schoolRef = doc(db, 'schools', schoolId);
+    await setDoc(schoolRef, schoolData, { merge: true });
+    const userProfileRef = doc(db, 'userProfiles', userId);
+    await updateDoc(userProfileRef, { schoolId: schoolId, schoolName: schoolData.name });
+  } catch (error) {
+    console.error(`Error updating school profile for schoolId ${schoolId}:`, error);
+    throw error;
+  }
+};
+
+export const updateEmployerProfile = async (
+  userId: string,
+  employerId: string,
+  employerData: { companyName: string; address: string; contactEmail: string; phone: string; website: string; logoUrl?: string; description?: string }
+): Promise<void> => {
+  try {
+    const employerRef = doc(db, 'employers', employerId);
+    await setDoc(employerRef, employerData, { merge: true });
+    const userProfileRef = doc(db, 'userProfiles', userId);
+    await updateDoc(userProfileRef, { employerId: employerId, companyName: employerData.companyName });
+  } catch (error) {
+    console.error(`Error updating employer profile for employerId ${employerId}:`, error);
+    throw error;
+  }
+};
 
 export { app, auth, db }; // Export db

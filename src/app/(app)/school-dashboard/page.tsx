@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
 import { useAuth } from '@/contexts/auth-context';
 import {
@@ -278,84 +279,111 @@ export default function SchoolDashboardPage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-6">
       <PageHeader
         title="School Dashboard"
-        description="Manage your institution's internships and student career services."
+        description="Manage your school's programs and student applications."
       />
 
-      <div className="mt-6 mb-4 flex justify-end">
-        <Dialog open={isCreateFormOpen} onOpenChange={setIsCreateFormOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setIsCreateFormOpen(true)}>
-              <PlusCircle className="mr-2 h-4 w-4" /> Create New Internship
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[625px]">
-            <DialogHeader>
-              <DialogTitle>Create New Internship Program</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreateProgram} className="space-y-4 py-4">
-              <div>
-                <Label htmlFor="new-title">Program Title</Label>
-                <Input id="new-title" value={title} onChange={(e) => setTitle(e.target.value)} required disabled={isSubmitting} />
-              </div>
-              <div>
-                <Label htmlFor="new-schoolName">School Name (as it should appear on listings)</Label>
-                <Input id="new-schoolName" value={schoolNameForForm} onChange={(e) => setSchoolNameForForm(e.target.value)} required disabled={isSubmitting} placeholder="e.g., University of Example"/>
-              </div>
-              <div>
-                <Label htmlFor="new-description">Description</Label>
-                <Textarea id="new-description" value={description} onChange={(e) => setDescription(e.target.value)} required disabled={isSubmitting} />
-              </div>
-              <div>
-                <Label htmlFor="new-requirements">Requirements</Label>
-                <Textarea id="new-requirements" value={requirements} onChange={(e) => setRequirements(e.target.value)} required disabled={isSubmitting} />
-              </div>
-              <div>
-                <Label htmlFor="new-status">Status</Label>
-                <Select value={newProgramStatus} onValueChange={(value: 'open' | 'closed' | 'draft') => setNewProgramStatus(value)} disabled={isSubmitting}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="open">Open</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                   <Button type="button" variant="outline" onClick={resetCreateForm} disabled={isSubmitting}>Cancel</Button>
-                </DialogClose>
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Create Program
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {programs.length === 0 && !isLoading && (
-        <p className="mt-4 text-center text-muted-foreground">No internship programs found. Get started by creating one!</p>
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+          <strong className="font-bold">Error:</strong>
+          <span className="block sm:inline"> {error}</span>
+          {error.includes('School ID not found') && (
+            <p className="mt-2 text-sm">
+              Please <Link href="/school-dashboard/profile" className="text-blue-700 underline">complete your school profile</Link> to access all features.
+            </p>
+          )}
+        </div>
       )}
 
-      {programs.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {programs.map((program) => (
-            <div key={program.id} className="p-6 border rounded-lg shadow-sm bg-card text-card-foreground flex flex-col">
-              <h3 className="text-xl font-semibold mb-2">{program.title}</h3>
-              <p className="text-sm text-muted-foreground mb-1">School: {program.schoolName}</p>
-              <p className="text-sm text-muted-foreground mb-1">Status: <span className={`capitalize px-2 py-0.5 rounded-full text-xs ${program.status === 'open' ? 'bg-green-100 text-green-700' : program.status === 'closed' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>{program.status}</span></p>
-              <p className="text-sm text-muted-foreground mb-3">Created: {formatDate(program.createdAt)}</p>
-              <p className="text-sm mb-3 line-clamp-3 flex-grow">{program.description}</p>
-              <Button variant="outline" size="sm" className="w-full mt-auto" onClick={() => handleViewDetails(program)}>View Applications</Button>
-            </div>
-          ))}
+      {!schoolId ? (
+        <div className="text-center py-10">
+          <p className="text-lg text-gray-600 mb-4">
+            No school profile found for your account.
+          </p>
+          <Link href="/school-dashboard/profile" passHref>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+              Complete Your School Profile
+            </Button>
+          </Link>
         </div>
+      ) : (
+        <>
+          <div className="mt-6 mb-4 flex justify-end">
+            <Dialog open={isCreateFormOpen} onOpenChange={setIsCreateFormOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={() => setIsCreateFormOpen(true)}>
+                  <PlusCircle className="mr-2 h-4 w-4" /> Create New Internship
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[625px]">
+                <DialogHeader>
+                  <DialogTitle>Create New Internship Program</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleCreateProgram} className="space-y-4 py-4">
+                  <div>
+                    <Label htmlFor="new-title">Program Title</Label>
+                    <Input id="new-title" value={title} onChange={(e) => setTitle(e.target.value)} required disabled={isSubmitting} />
+                  </div>
+                  <div>
+                    <Label htmlFor="new-schoolName">School Name (as it should appear on listings)</Label>
+                    <Input id="new-schoolName" value={schoolNameForForm} onChange={(e) => setSchoolNameForForm(e.target.value)} required disabled={isSubmitting} placeholder="e.g., University of Example"/>
+                  </div>
+                  <div>
+                    <Label htmlFor="new-description">Description</Label>
+                    <Textarea id="new-description" value={description} onChange={(e) => setDescription(e.target.value)} required disabled={isSubmitting} />
+                  </div>
+                  <div>
+                    <Label htmlFor="new-requirements">Requirements</Label>
+                    <Textarea id="new-requirements" value={requirements} onChange={(e) => setRequirements(e.target.value)} required disabled={isSubmitting} />
+                  </div>
+                  <div>
+                    <Label htmlFor="new-status">Status</Label>
+                    <Select value={newProgramStatus} onValueChange={(value: 'open' | 'closed' | 'draft') => setNewProgramStatus(value)} disabled={isSubmitting}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="draft">Draft</SelectItem>
+                        <SelectItem value="open">Open</SelectItem>
+                        <SelectItem value="closed">Closed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <DialogFooter>
+                    <DialogClose asChild>
+                       <Button type="button" variant="outline" onClick={resetCreateForm} disabled={isSubmitting}>Cancel</Button>
+                    </DialogClose>
+                    <Button type="submit" disabled={isSubmitting}>
+                      {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Create Program
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {programs.length === 0 && !isLoading && (
+            <p className="mt-4 text-center text-muted-foreground">No internship programs found. Get started by creating one!</p>
+          )}
+
+          {programs.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {programs.map((program) => (
+                <div key={program.id} className="p-6 border rounded-lg shadow-sm bg-card text-card-foreground flex flex-col">
+                  <h3 className="text-xl font-semibold mb-2">{program.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-1">School: {program.schoolName}</p>
+                  <p className="text-sm text-muted-foreground mb-1">Status: <span className={`capitalize px-2 py-0.5 rounded-full text-xs ${program.status === 'open' ? 'bg-green-100 text-green-700' : program.status === 'closed' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>{program.status}</span></p>
+                  <p className="text-sm text-muted-foreground mb-3">Created: {formatDate(program.createdAt)}</p>
+                  <p className="text-sm mb-3 line-clamp-3 flex-grow">{program.description}</p>
+                  <Button variant="outline" size="sm" className="w-full mt-auto" onClick={() => handleViewDetails(program)}>View Applications</Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

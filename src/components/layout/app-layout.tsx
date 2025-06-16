@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -48,7 +47,7 @@ const ThemeToggle = () => {
   );
 };
 
-const SimpleThemeProvider = ({ children }: { children: React.ReactNode }) => {
+const SimpleThemeProvider = ({ children, attribute, defaultTheme, enableSystem }: { children: React.ReactNode; attribute?: string; defaultTheme?: string; enableSystem?: boolean }) => {
   return <>{children}</>;
 };
 
@@ -131,7 +130,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <DropdownMenuContent align="start" side="top" sideOffset={8} className="w-56 mb-1 ml-1">
                     <DropdownMenuLabel className="truncate">{user.displayName || user.email}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => router.push('/profile-resume')}>
+                    <DropdownMenuItem onClick={() => {
+                      if (userRole === 'school_admin') {
+                        router.push('/school-dashboard/profile');
+                      } else if (userRole === 'employer') {
+                        router.push('/employer-dashboard/profile');
+                      } else {
+                        router.push('/profile-resume');
+                      }
+                    }}>
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </DropdownMenuItem>
