@@ -1,4 +1,4 @@
-# **App Name**: Career Compass
+# **App Name**: E Hub
 
 ## Core Features:
 

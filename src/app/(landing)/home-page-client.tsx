@@ -38,7 +38,7 @@ export function HomePageClient({ features, team }: HomePageClientProps) {
             Unlock Your <span className="text-primary">Career Potential</span>
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg leading-8 text-muted-foreground">
-            Career Compass is Cameroon's first AI-powered platform dedicated to guiding youth towards success with personalized career development tools and job matching.
+            E Hub is Cameroon's first AI-powered platform dedicated to guiding youth towards success with personalized career development tools and job matching.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-6">
             <Button asChild size="lg" className="shadow-lg w-full sm:w-auto">
@@ -54,7 +54,7 @@ export function HomePageClient({ features, team }: HomePageClientProps) {
       <section id="features" className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="font-headline text-3xl font-semibold tracking-tight text-foreground">Why Choose Career Compass?</h2>
+            <h2 className="font-headline text-3xl font-semibold tracking-tight text-foreground">Why Choose E Hub?</h2>
             <p className="mt-3 text-lg text-muted-foreground max-w-xl mx-auto">
               Empowering you with the tools and insights to thrive in today&apos;s job market.
             </p>
@@ -115,7 +115,7 @@ export function HomePageClient({ features, team }: HomePageClientProps) {
                 ))}
               </ul>
               <Button asChild size="lg" className="mt-8 shadow-md">
-                <Link href="/signup">Join Career Compass Today <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                <Link href="/signup">Join E Hub Today <ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
           </div>
@@ -172,7 +172,7 @@ export function HomePageClient({ features, team }: HomePageClientProps) {
               Ready to Take Control of Your Career?
             </h2>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Join thousands of young Cameroonians already building their future with Career Compass. Sign up today and start your journey to success!
+              Join thousands of young Cameroonians already building their future with E Hub. Sign up today and start your journey to success!
             </p>
             <div className="mt-10">
               <Button asChild size="lg" className="shadow-lg text-lg py-7 px-8">
