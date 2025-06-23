@@ -51,6 +51,80 @@ export function HomePageClient({ features, team }: HomePageClientProps) {
         </div>
       </section>
 
+      {/* Functions for Students, Schools, and Employers */}
+      <section className="py-12 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* For Students */}
+            <Card className="shadow-lg">
+              <CardHeader>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Award className="h-6 w-6" />
+                </div>
+                <CardTitle className="text-xl">For Students</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-4 text-muted-foreground">
+                  Discover your ideal career path, access job opportunities, and build professional skills.
+                </p>
+                <ul className="space-y-2 mb-4">
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-primary mr-2" /> AI-powered career assessments</li>
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-primary mr-2" /> Personalized job recommendations</li>
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-primary mr-2" /> Resume builder and interview prep</li>
+                </ul>
+                <Button asChild variant="link" className="px-0 text-primary">
+                  <Link href="/signup">Create an account <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </Button>
+              </CardContent>
+            </Card>
+            {/* For Schools */}
+            <Card className="shadow-lg">
+              <CardHeader>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                  <Briefcase className="h-6 w-6" />
+                </div>
+                <CardTitle className="text-xl">For Schools</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-4 text-muted-foreground">
+                  Manage internships, track student outcomes, and connect with industry partners.
+                </p>
+                <ul className="space-y-2 mb-4">
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-emerald-600 mr-2" /> Web-based internship management</li>
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-emerald-600 mr-2" /> Student placement tracking</li>
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-emerald-600 mr-2" /> Employer engagement analytics</li>
+                </ul>
+                <Button asChild variant="link" className="px-0 text-emerald-600">
+                  <Link href="/contact">Partner with us <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </Button>
+              </CardContent>
+            </Card>
+            {/* For Employers */}
+            <Card className="shadow-lg">
+              <CardHeader>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                  <Users className="h-6 w-6" />
+                </div>
+                <CardTitle className="text-xl">For Employers</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-4 text-muted-foreground">
+                  Find top talent, post jobs and internships, and streamline your hiring process.
+                </p>
+                <ul className="space-y-2 mb-4">
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-blue-600 mr-2" /> Post jobs and internships</li>
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-blue-600 mr-2" /> Access student talent pool</li>
+                  <li className="flex items-center"><CheckCircle className="h-5 w-5 text-blue-600 mr-2" /> Simplified application management</li>
+                </ul>
+                <Button asChild variant="link" className="px-0 text-blue-600">
+                  <Link href="/contact">Get Started <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       <section id="features" className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
