@@ -54,6 +54,12 @@ export function HomePageClient({ features, team }: HomePageClientProps) {
       {/* Functions for Students, Schools, and Employers */}
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="font-headline text-3xl font-semibold tracking-tight text-foreground">Solutions for Everyone</h2>
+            <p className="mt-3 text-lg text-muted-foreground max-w-xl mx-auto">
+              Our platform connects all stakeholders in the career development ecosystem.
+            </p>
+          </div>
           <div className="grid gap-8 md:grid-cols-3">
             {/* For Students */}
             <Card className="shadow-lg">
@@ -61,7 +67,7 @@ export function HomePageClient({ features, team }: HomePageClientProps) {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Award className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-xl">For Students</CardTitle>
+                <CardTitle className="text-xl">For Young Professionals</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-muted-foreground">
